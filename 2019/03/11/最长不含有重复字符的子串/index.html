@@ -389,6 +389,7 @@
         <h5 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h5><p>输入一组字符串，字符串中含有重复字符，求最大不重复的子字符串长度。</p>
 <h5 id="描述："><a href="#描述：" class="headerlink" title="描述："></a>描述：</h5><p>输入的字符串为 abcabcdefghabe 最大和的连续子数组为 abcdefgh 其最大长度为8。</p>
 <h5 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h5><p>把第一个元素设为开始位置，循环遍历字符串，记录下所有元素所在的位置下标，一直到重复字符出现，记录长度，然后把开始位置改为上一个重复字符所在位置的后面，继续遍历，重复字符出现、记录长度、开始位置下移，最后比较长度，取长的那个，直到找出最长的子串。</p>
+<a id="more"></a>
 <p>代码很简单：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Algorithm</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">lengthOfNonRepeatingSubStr</span><span class="params">($str)</span>: <span class="title">int</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $lastPosition = [];</span><br><span class="line">        $start = <span class="number">0</span>;</span><br><span class="line">        $maxLength = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; strlen($str); $i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">isset</span>($lastPosition[$str&#123;$i&#125;])) &#123;</span><br><span class="line">                <span class="keyword">if</span> ($lastPosition[$str&#123;$i&#125;] &gt; $start) &#123;</span><br><span class="line">                    $start = $lastPosition[$str&#123;$i&#125;] + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> ($i - $start + <span class="number">1</span> &gt; $maxLength) &#123;</span><br><span class="line">                $maxLength = $i - $start + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            $lastPosition[$str&#123;$i&#125;] = $i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $maxLength;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$algorithm = <span class="keyword">new</span> Algorithm();</span><br><span class="line"><span class="keyword">echo</span> $algorithm-&gt;lengthOfNonRepeatingSubStr(<span class="string">'aabcdeefgefgabcdefgihrtnmeuig'</span>); <span class="comment">//13</span></span><br></pre></td></tr></table></figure>
       
@@ -540,7 +541,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">标签</span>
                   
                 </div>
