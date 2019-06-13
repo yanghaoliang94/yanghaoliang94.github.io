@@ -96,15 +96,18 @@
 
 
 
-  <meta name="keywords" content="redis,缓存,持久化">
+  <meta name="description" content="方式Redis有两种持久化的方式：快照（RDB文件）和追加式文件（AOF文件）：  RDB持久化方式会在一个特定的间隔保存那个时间点的一个数据快照。 AOF持久化方式则会记录每一个服务器收到的写操作。在服务重启时，这些记录的操作会逐条执行从而重建出原来的数据。写操作命令记录的格式跟Redis协议一致，以追加的方式进行保存。 两种方式的持久化是可以同时存在的，但是当Redis重启时，AOF文件会被优">
+<meta name="keywords" content="redis,缓存,持久化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis持久化">
 <meta property="og:url" content="http://yoursite.com/2019/06/11/redis持久化/index.html">
 <meta property="og:site_name" content="Blog">
+<meta property="og:description" content="方式Redis有两种持久化的方式：快照（RDB文件）和追加式文件（AOF文件）：  RDB持久化方式会在一个特定的间隔保存那个时间点的一个数据快照。 AOF持久化方式则会记录每一个服务器收到的写操作。在服务重启时，这些记录的操作会逐条执行从而重建出原来的数据。写操作命令记录的格式跟Redis协议一致，以追加的方式进行保存。 两种方式的持久化是可以同时存在的，但是当Redis重启时，AOF文件会被优">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-13T16:34:32.056Z">
+<meta property="og:updated_time" content="2019-06-13T16:35:39.445Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis持久化">
+<meta name="twitter:description" content="方式Redis有两种持久化的方式：快照（RDB文件）和追加式文件（AOF文件）：  RDB持久化方式会在一个特定的间隔保存那个时间点的一个数据快照。 AOF持久化方式则会记录每一个服务器收到的写操作。在服务重启时，这些记录的操作会逐条执行从而重建出原来的数据。写操作命令记录的格式跟Redis协议一致，以追加的方式进行保存。 两种方式的持久化是可以同时存在的，但是当Redis重启时，AOF文件会被优">
 
 
 
@@ -347,7 +350,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-14 00:34:32" itemprop="dateModified" datetime="2019-06-14T00:34:32+08:00">2019-06-14</time>
+                <time title="修改时间：2019-06-14 00:35:39" itemprop="dateModified" datetime="2019-06-14T00:35:39+08:00">2019-06-14</time>
               
             
           </span>
@@ -381,7 +384,90 @@
       
 
       
-        
+        <h4 id="方式"><a href="#方式" class="headerlink" title="方式"></a>方式</h4><p>Redis有两种持久化的方式：快照（RDB文件）和追加式文件（AOF文件）：</p>
+<ul>
+<li>RDB持久化方式会在一个特定的间隔保存那个时间点的一个数据快照。</li>
+<li>AOF持久化方式则会记录每一个服务器收到的写操作。在服务重启时，这些记录的操作会逐条执行从而重建出原来的数据。写操作命令记录的格式跟Redis协议一致，以追加的方式进行保存。</li>
+<li>两种方式的持久化是可以同时存在的，但是当Redis重启时，AOF文件会被优先用于重建数据。</li>
+</ul>
+<a id="more"></a>
+<h4 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h4><h5 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h5><ul>
+<li>Redis调用fork()，产生一个子进程。</li>
+<li>子进程把数据写到一个临时的RDB文件。</li>
+<li>当子进程写完新的RDB文件后，把旧的RDB文件替换掉。</li>
+</ul>
+<h5 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h5><ul>
+<li>RDB文件是一个很简洁的单文件，它保存了某个时间点的Redis数据，很适合用于做备份。你可以设定一个时间点对RDB文件进行归档，这样就能在需要的时候很轻易的把数据恢复到不同的版本。</li>
+<li>基于上面所描述的特性，RDB很适合用于灾备。单文件很方便就能传输到远程的服务器上。</li>
+<li>RDB的性能很好，需要进行持久化时，主进程会fork一个子进程出来，然后把持久化的工作交给子进程，自己不会有相关的I/O操作。</li>
+<li>与AOF相比，在数据量比较大的情况下，RDB的启动速度更快。</li>
+</ul>
+<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><ul>
+<li>RDB会产生数据的丢失。假设每5分钟保存一次快照，如果Redis因为某些原因不能正常工作，那么从上次产生快照到Redis出现问题这段时间的数据就会丢失。</li>
+<li>RDB使用fork()产生子进程进行数据的持久化，如果数据比较大的话可能就会花费点时间，造成Redis停止服务几毫秒。如果数据量很大且CPU性能不是很好的时候，停止服务的时间甚至会到1秒。</li>
+</ul>
+<h5 id="文件保存路径和名称"><a href="#文件保存路径和名称" class="headerlink" title="文件保存路径和名称"></a>文件保存路径和名称</h5><p>默认Redis会把RDB快照文件存储为当前目录下名为dump.rdb的文件。要修改文件的存储路径和名称，可以通过修改配置文件redis.conf：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># RDB文件名，默认为dump.rdb。</span><br><span class="line">dbfilename dump.rdb</span><br><span class="line"></span><br><span class="line"># 文件存放的目录，AOF文件同样存放在此目录下。默认为当前工作目录。</span><br><span class="line">dir ./</span><br></pre></td></tr></table></figure>
+
+<h5 id="RDB启用-禁用"><a href="#RDB启用-禁用" class="headerlink" title="RDB启用/禁用"></a>RDB启用/禁用</h5><p>RDB通过配置保存点来启用,使Redis如果在每N秒后数据发生了M次改变就保存快照文件。例如下面这个保存点配置表示每60秒，如果数据发生了1000次以上的变动，Redis就会自动保存快照文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save 60 1000</span><br></pre></td></tr></table></figure>
+
+<p>保存点可以设置多个，Redis默认设置了3个保存点：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">save</span> 900 1 #900秒后至少1个key有变动</span><br><span class="line"><span class="attribute">save</span> 300 10 #300秒后至少10个key有变动</span><br><span class="line"><span class="attribute">save</span> 60 10000 #60秒后至少10000个key有变动</span><br></pre></td></tr></table></figure>
+
+<p>如果想禁用RDB，可以通过注释掉所有”save”配置，或者在最后一条”save”配置后添加如下的配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save &quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<h5 id="手动生成快照"><a href="#手动生成快照" class="headerlink" title="手动生成快照"></a>手动生成快照</h5><h6 id="SAVE"><a href="#SAVE" class="headerlink" title="SAVE"></a>SAVE</h6><p>SAVE命令会使用同步的方式生成RDB快照文件，这意味着在这个过程中会阻塞所有其他客户端的请求。因此不建议在生产环境使用这个命令，除非因为某种原因需要去阻止Redis使用子进程进行后台生成快照（例如调用fork(2)出错）.</p>
+<h6 id="BGSAVE"><a href="#BGSAVE" class="headerlink" title="BGSAVE"></a>BGSAVE</h6><p>BGSAVE命令使用后台的方式保存RDB文件，调用此命令后，会立刻返回OK返回码。Redis会产生一个子进程进行处理并立刻恢复对客户端的服务。在客户端我们可以使用LASTSAVE命令查看操作是否成功。</p>
+<h4 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h4><h5 id="工作原理-1"><a href="#工作原理-1" class="headerlink" title="工作原理"></a>工作原理</h5><ul>
+<li>Redis调用fork()，产生一个子进程。</li>
+<li>子进程在临时文件中写入新的AOF。</li>
+<li>父进程将所有新更改累积在内存缓冲区中(但同时它会在旧的AOF文件中写入新的更改，因此如果重写失败，数据是安全的)。</li>
+<li>子进程文件重写完成后,父进程得到信号，并在子项生成的文件末尾附加内存缓冲区。</li>
+<li>完成后,Redis以原子方式将旧文件重命名为新文件，并开始将新数据附加到新文件中。<h5 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h5></li>
+<li>比RDB可靠。你可以制定不同的fsync策略：不进行fsync、每秒fsync一次和每次查询进行fsync。默认是每秒fsync一次。这意味着你最多丢失一秒钟的数据。</li>
+<li>AOF日志文件是一个纯追加的文件。就算是遇到突然停电的情况，也不会出现日志的定位或者损坏问题。甚至如果因为某些原因（例如磁盘满了）命令只写了一半到日志文件里，我们也可以用 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- 当AOF文件太大时，Redis会自动在后台进行重写。重写很安全，因为重写是在一个新的文件上进行，同时Redis会继续往旧的文件追加数据。新文件上会写入能重建当前数据集的最小操作命令的集合。当新文件重写完，Redis会把新旧文件进行切换，然后开始把数据写到新文件上。</span><br><span class="line">- AOF把操作命令以简单易懂的格式一条接一条的保存在文件里，很容易导出来用于恢复数据。例如我们不小心用FLUSHALL命令把所有数据刷掉了，只要文件没有被重写，我们可以把服务停掉，把最后那条命令删掉，然后重启服务，这样就能把数据恢复回来。</span><br><span class="line">##### 缺点</span><br><span class="line">- AOF文件通常比同一数据集的等效RDB文件大。</span><br><span class="line">- 在某些fsync策略下，AOF的速度会比RDB慢。通常fsync设置为每秒一次就能获得比较高的性能，而在禁止fsync即使在高负载下也应该与RDB一样快。</span><br><span class="line">- 在过去曾经发现一些很罕见的BUG导致使用AOF重建的数据跟原数据不一致的问题。</span><br><span class="line">##### 启用AOF</span><br><span class="line">把配置项appendonly设为yes：</span><br><span class="line">``` appendonly yes</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="文件路径和名称"><a href="#文件路径和名称" class="headerlink" title="文件路径和名称"></a>文件路径和名称</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 文件存放目录，与RDB共用。默认为当前工作目录。</span><br><span class="line">dir ./</span><br><span class="line"></span><br><span class="line"># 默认文件名为appendonly.aof</span><br><span class="line">appendfilename &quot;appendonly.aof&quot;</span><br></pre></td></tr></table></figure>
+
+<h5 id="AOF配置"><a href="#AOF配置" class="headerlink" title="AOF配置"></a>AOF配置</h5><p>你可以配置Redis调用fsync的频率，有三个选项：</p>
+<ul>
+<li>appendfsync always：每当有新命令追加到AOF的时候调用fsync。速度最慢，但是最安全。</li>
+<li>appendfsync everysec：每秒fsync一次。速度快（2.4版本跟快照方式速度差不多），如果发生灾难，您可能会丢失1秒的数据。</li>
+<li>appendfsync no：从不fsync，只需将数据放在操作系统的手中。更快，更不安全的方法。通常情况下，Linux将使用此配置每30秒刷新一次数据，但这取决于内核的精确调整。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># appendfsync always</span><br><span class="line">appendfsync everysec</span><br><span class="line"># appendfsync no</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>我们可以通过配置设置日志重写的条件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Redis会记住自从上一次重写后AOF文件的大小（如果自Redis启动后还没重写过，则记住启动时使用的AOF文件的大小）。</span><br><span class="line"># 如果当前的文件大小比起记住的那个大小超过指定的百分比，则会触发重写。</span><br><span class="line"># 同时需要设置一个文件大小最小值，只有大于这个值文件才会重写，以防文件很小，但是已经达到百分比的情况。</span><br><span class="line"></span><br><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br></pre></td></tr></table></figure>
+
+<p>要禁用自动的日志重写功能，我们可以把百分比设置为0：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto-aof-rewrite-percentage 0</span><br></pre></td></tr></table></figure>
+
+<p>Redis 2.4以上才可以自动进行日志重写，之前的版本需要手动运行BGREWRITEAOF这个命令。</p>
+<h5 id="数据损坏修复"><a href="#数据损坏修复" class="headerlink" title="数据损坏修复"></a>数据损坏修复</h5><p>如果因为某些原因（例如服务器崩溃）AOF文件损坏了，导致Redis加载不了，可以通过以下方式进行修复：</p>
+<ul>
+<li>备份AOF文件。</li>
+<li>使用redis-check-aof命令修复原始的AOF文件：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ redis-check-aof --fix</span><br><span class="line">可以使用diff -u命令看下两个文件的差异。</span><br><span class="line">使用修复过的文件重启Redis服务。</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h5 id="从RDB切换到AOF"><a href="#从RDB切换到AOF" class="headerlink" title="从RDB切换到AOF"></a>从RDB切换到AOF</h5><p>备份一个最新的dump.rdb的文件，并把备份文件放在一个安全的地方。<br>运行以下两条命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ redis-cli config set appendonly yes</span><br><span class="line">$ redis-cli config set save &quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>确保数据跟切换前一致。</li>
+<li>确保数据正确的写到AOF文件里。<br>第二条命令是用来禁用RDB的持久化方式，但是这不是必须的，因为你可以同时启用两种持久化方式。<br>记得对配置文件redis.conf进行编辑启用AOF，因为命令行方式修改配置在重启Redis后就会失效。</li>
+</ul>
+<h4 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h4><h5 id="建议的备份方法："><a href="#建议的备份方法：" class="headerlink" title="建议的备份方法："></a>建议的备份方法：</h5><ul>
+<li>创建一个定时任务，每小时和每天创建一个快照，保存在不同的文件夹里。</li>
+<li>定时任务运行时，把太旧的文件进行删除。例如只保留48小时的按小时创建的快照和一到两个月的按天创建的快照。</li>
+<li>每天确保一次把快照文件传输到数据中心外的地方进行保存，至少不能保存在Redis服务所在的服务器。</li>
+</ul>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><blockquote><p><a href="http://redis.io/topics/persistence" target="_blank" rel="noopener">http://redis.io/topics/persistence</a></p>
+</blockquote>
+
       
     </div>
 
@@ -480,8 +566,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -565,6 +660,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#方式"><span class="nav-number">1.</span> <span class="nav-text">方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB"><span class="nav-number">2.</span> <span class="nav-text">RDB</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#工作原理"><span class="nav-number">2.1.</span> <span class="nav-text">工作原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#优点"><span class="nav-number">2.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缺点"><span class="nav-number">2.3.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件保存路径和名称"><span class="nav-number">2.4.</span> <span class="nav-text">文件保存路径和名称</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB启用-禁用"><span class="nav-number">2.5.</span> <span class="nav-text">RDB启用/禁用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#手动生成快照"><span class="nav-number">2.6.</span> <span class="nav-text">手动生成快照</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#SAVE"><span class="nav-number">2.6.1.</span> <span class="nav-text">SAVE</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#BGSAVE"><span class="nav-number">2.6.2.</span> <span class="nav-text">BGSAVE</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF"><span class="nav-number">3.</span> <span class="nav-text">AOF</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#工作原理-1"><span class="nav-number">3.1.</span> <span class="nav-text">工作原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#优点-1"><span class="nav-number">3.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件路径和名称"><span class="nav-number">3.3.</span> <span class="nav-text">文件路径和名称</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF配置"><span class="nav-number">3.4.</span> <span class="nav-text">AOF配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据损坏修复"><span class="nav-number">3.5.</span> <span class="nav-text">数据损坏修复</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#从RDB切换到AOF"><span class="nav-number">3.6.</span> <span class="nav-text">从RDB切换到AOF</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#备份"><span class="nav-number">4.</span> <span class="nav-text">备份</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#建议的备份方法："><span class="nav-number">4.1.</span> <span class="nav-text">建议的备份方法：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
