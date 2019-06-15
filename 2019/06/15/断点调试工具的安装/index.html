@@ -96,18 +96,26 @@
 
 
 
-  <meta name="description" content="问题：输入一组字符串，字符串中含有重复字符，求最大不重复的子字符串长度。 描述：输入的字符串为 abcabcdefghabe 最大和的连续子数组为 abcdefgh 其最大长度为8。 思路：把第一个元素设为开始位置，循环遍历字符串，记录下所有元素所在的位置下标，一直到重复字符出现，记录长度，然后把开始位置改为上一个重复字符所在位置的后面，继续遍历，重复字符出现、记录长度、开始位置下移，最后比较长度">
-<meta name="keywords" content="算法">
+  <meta name="description" content="简介 本篇主要介绍 PhpStorm Xdebug 的配置与使用  看完本篇文章，相信大家对如何实现 Laravel 断点调试会有一个清晰的认识。">
+<meta name="keywords" content="PhpStorm,Xdebug,断点调试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最长不含有重复字符的子串">
-<meta property="og:url" content="http://yoursite.com/2019/03/11/最长不含有重复字符的子串/index.html">
+<meta property="og:title" content="PhpStorm Xdebug 断点调试工具的安装">
+<meta property="og:url" content="http://yoursite.com/2019/06/15/断点调试工具的安装/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="问题：输入一组字符串，字符串中含有重复字符，求最大不重复的子字符串长度。 描述：输入的字符串为 abcabcdefghabe 最大和的连续子数组为 abcdefgh 其最大长度为8。 思路：把第一个元素设为开始位置，循环遍历字符串，记录下所有元素所在的位置下标，一直到重复字符出现，记录长度，然后把开始位置改为上一个重复字符所在位置的后面，继续遍历，重复字符出现、记录长度、开始位置下移，最后比较长度">
+<meta property="og:description" content="简介 本篇主要介绍 PhpStorm Xdebug 的配置与使用  看完本篇文章，相信大家对如何实现 Laravel 断点调试会有一个清晰的认识。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-10T16:45:39.000Z">
+<meta property="og:image" content="http://yoursite.com/images/断点调试工具的安装/1.png">
+<meta property="og:image" content="http://yoursite.com/images/断点调试工具的安装/2.png">
+<meta property="og:image" content="http://yoursite.com/images/断点调试工具的安装/3.png">
+<meta property="og:image" content="http://yoursite.com/images/断点调试工具的安装/4.png">
+<meta property="og:image" content="http://yoursite.com/images/断点调试工具的安装/5.png">
+<meta property="og:image" content="http://yoursite.com/images/断点调试工具的安装/6.png">
+<meta property="og:image" content="http://yoursite.com/images/断点调试工具的安装/7.png">
+<meta property="og:updated_time" content="2019-06-15T14:44:59.827Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="最长不含有重复字符的子串">
-<meta name="twitter:description" content="问题：输入一组字符串，字符串中含有重复字符，求最大不重复的子字符串长度。 描述：输入的字符串为 abcabcdefghabe 最大和的连续子数组为 abcdefgh 其最大长度为8。 思路：把第一个元素设为开始位置，循环遍历字符串，记录下所有元素所在的位置下标，一直到重复字符出现，记录长度，然后把开始位置改为上一个重复字符所在位置的后面，继续遍历，重复字符出现、记录长度、开始位置下移，最后比较长度">
+<meta name="twitter:title" content="PhpStorm Xdebug 断点调试工具的安装">
+<meta name="twitter:description" content="简介 本篇主要介绍 PhpStorm Xdebug 的配置与使用  看完本篇文章，相信大家对如何实现 Laravel 断点调试会有一个清晰的认识。">
+<meta name="twitter:image" content="http://yoursite.com/images/断点调试工具的安装/1.png">
 
 
 
@@ -115,7 +123,7 @@
 
   
   
-  <link rel="canonical" href="http://yoursite.com/2019/03/11/最长不含有重复字符的子串/">
+  <link rel="canonical" href="http://yoursite.com/2019/06/15/断点调试工具的安装/">
 
 
 
@@ -125,7 +133,7 @@
   };
 </script>
 
-  <title>最长不含有重复字符的子串 | Blog</title>
+  <title>PhpStorm Xdebug 断点调试工具的安装 | Blog</title>
   
 
 
@@ -290,7 +298,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/11/最长不含有重复字符的子串/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/15/断点调试工具的安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="缪斯爱柯漫">
@@ -307,7 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">最长不含有重复字符的子串
+          <h1 class="post-title" itemprop="name headline">PhpStorm Xdebug 断点调试工具的安装
 
               
             
@@ -333,30 +341,16 @@
                 
               
 
-              <time title="创建时间：2019-03-11 00:45:39" itemprop="dateCreated datePublished" datetime="2019-03-11T00:45:39+08:00">2019-03-11</time>
+              <time title="创建时间：2019-06-15 19:52:34 / 修改时间：22:44:59" itemprop="dateCreated datePublished" datetime="2019-06-15T19:52:34+08:00">2019-06-15</time>
             
 
+            
+              
+
+              
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -386,12 +380,73 @@
       
 
       
-        <h5 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h5><p>输入一组字符串，字符串中含有重复字符，求最大不重复的子字符串长度。</p>
-<h5 id="描述："><a href="#描述：" class="headerlink" title="描述："></a>描述：</h5><p>输入的字符串为 abcabcdefghabe 最大和的连续子数组为 abcdefgh 其最大长度为8。</p>
-<h5 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h5><p>把第一个元素设为开始位置，循环遍历字符串，记录下所有元素所在的位置下标，一直到重复字符出现，记录长度，然后把开始位置改为上一个重复字符所在位置的后面，继续遍历，重复字符出现、记录长度、开始位置下移，最后比较长度，取长的那个，直到找出最长的子串。</p>
+        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><blockquote>
+<p>本篇主要介绍 PhpStorm Xdebug 的配置与使用</p>
+</blockquote>
+<p>看完本篇文章，相信大家对如何实现 Laravel 断点调试会有一个清晰的认识。</p>
 <a id="more"></a>
-<p>代码很简单：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Algorithm</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">lengthOfNonRepeatingSubStr</span><span class="params">($str)</span>: <span class="title">int</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $lastPosition = [];</span><br><span class="line">        $start = <span class="number">0</span>;</span><br><span class="line">        $maxLength = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; strlen($str); $i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">isset</span>($lastPosition[$str&#123;$i&#125;])) &#123;</span><br><span class="line">                <span class="keyword">if</span> ($lastPosition[$str&#123;$i&#125;] &gt; $start) &#123;</span><br><span class="line">                    $start = $lastPosition[$str&#123;$i&#125;] + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> ($i - $start + <span class="number">1</span> &gt; $maxLength) &#123;</span><br><span class="line">                $maxLength = $i - $start + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            $lastPosition[$str&#123;$i&#125;] = $i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $maxLength;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$algorithm = <span class="keyword">new</span> Algorithm();</span><br><span class="line"><span class="keyword">echo</span> $algorithm-&gt;lengthOfNonRepeatingSubStr(<span class="string">'aabcdeefgefgabcdefgihrtnmeuig'</span>); <span class="comment">//13</span></span><br></pre></td></tr></table></figure>
+<h4 id="断点调试"><a href="#断点调试" class="headerlink" title="断点调试"></a>断点调试</h4><p>断点调试：顾名思义，就是能够打断程序运行，在程序中间可以看到此时 PHP 在内存中声明的所有的变量情况；结合步进工具，我们可以跟着 PHP 解析 Laravel 代码的顺序逐步分析，对理解源码运行原理有着举足轻重的作用。</p>
+<h4 id="推荐开发工具"><a href="#推荐开发工具" class="headerlink" title="推荐开发工具"></a>推荐开发工具</h4><blockquote>
+<p>PhpStorm<br>Chrome<br><a href="https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc" target="_blank" rel="noopener">Xdebug helper</a></p>
+</blockquote>
+<h4 id="PHP-Xdebug"><a href="#PHP-Xdebug" class="headerlink" title="PHP Xdebug"></a>PHP Xdebug</h4><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><p>属于PHP扩展,推荐使用pecl安装;</p>
+<h5 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h5><p>请将下列配置粘贴到 php.ini 后面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[xdebug]</span><br><span class="line">zend_extension=&quot;xdebug.so&quot;</span><br><span class="line">xdebug.profiler_append = 0</span><br><span class="line">xdebug.profiler_enable = 1</span><br><span class="line">xdebug.profiler_enable_trigger = 0</span><br><span class="line">xdebug.profiler_output_dir =&quot;~/xdebug&quot;</span><br><span class="line">xdebug.trace_output_dir =&quot;~/xdebug&quot;</span><br><span class="line">xdebug.profiler_output_name = &quot;cache.out.%t-%s&quot;</span><br><span class="line">xdebug.remote_enable = 1</span><br><span class="line">xdebug.remote_mode = &quot;req&quot;</span><br><span class="line">xdebug.remote_handler = &quot;dbgp&quot;</span><br><span class="line">xdebug.remote_host = &quot;127.0.0.1&quot;</span><br><span class="line">xdebug.remote_port = 9002</span><br><span class="line">xdebug.idekey=&quot;PHPSTORM&quot;</span><br><span class="line">xdebug.remote_autostart = no</span><br></pre></td></tr></table></figure>
+
+<p>配置项详解：</p>
+<ul>
+<li><p><code>zend_extension</code> ：填写你下载的 Xdebug 所在绝对路径/pecl下载填”xdebug.so”</p>
+</li>
+<li><p><code>xdebug.profiler_enable</code>：0 为关闭，1 为开启</p>
+</li>
+<li><p><code>xdebug.profiler_enable_trigger</code> ： 有关触发器的设置，写 0 即可</p>
+</li>
+<li><p><code>xdebug.profiler_output_dir</code>：Xdebug 日志记录的地址</p>
+</li>
+<li><p><code>xdebug.trace_output_dir</code>：同 xdebug.profiler_output_dir，配置请填写一致</p>
+</li>
+<li><p><code>xdebug.profiler_output_name</code>： 日志输出格式，按照我写就行</p>
+</li>
+<li><p><code>xdebug.profiler_append</code>： 关于附加设置，具体未知，默认填 0 即可</p>
+</li>
+<li><p><code>xdebug.remote_enable</code>： 远程调试功能，0 关闭，1 开启，只要是与浏览器联调，请开启此功能</p>
+</li>
+<li><p><code>xdebug.remote_host</code>： 联调的 URL 主机地址</p>
+</li>
+<li><p><code>xdebug.remote_port</code>： 联调的请求端口，如果本机 9001 未被占用，请如此设置即可</p>
+</li>
+<li><p><code>xdebug.remote_handler</code>：调试函数，默认 dbgp，不要对其修改</p>
+</li>
+<li><p><code>xdebug.idekey</code>：与 PhpStorm 连接时的确认口令，默认 PHPSTORM</p>
+</li>
+</ul>
+<h4 id="PhpStorm-配置"><a href="#PhpStorm-配置" class="headerlink" title="PhpStorm 配置"></a>PhpStorm 配置</h4><p>第一步，打开项目设置 PHP CLI</p>
+<img src="/images/断点调试工具的安装/1.png" class="img1">
+
+<p>第二步，设置 Xdebug 端口</p>
+<img src="/images/断点调试工具的安装/2.png" class="img1">
+
+<p>第三步，设置 PhpStorm Key、主机以及端口</p>
+<img src="/images/断点调试工具的安装/3.png" class="img1">
+
+<p>第四步，新建 Xdebug 服务，Name 可以根据自己项目名称来取</p>
+<img src="/images/断点调试工具的安装/4.png" class="img1">
+
+<p>第五步，配置 Xdebug 调试接口<br>点击 run -&gt; edit config</p>
+<img src="/images/断点调试工具的安装/5.png" class="img1">
+
+<h4 id="浏览器配置"><a href="#浏览器配置" class="headerlink" title="浏览器配置"></a>浏览器配置</h4><p>打开Chrome 打开下载好的xdebug help 的设置页面 在IDE key中选择PHPstorm</p>
+<img src="/images/断点调试工具的安装/6.png" class="img1">
+
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><blockquote>
+<p>重启你的Apache或Nginx<br>在PHPstorm中打上断点,打开右上角的电话图标开始监听,打开网页或点击run<br>xdebug 配置成功<br>如下图所示</p>
+</blockquote>
+<img src="/images/断点调试工具的安装/7.png" class="img1">
+
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><blockquote><p>大部分引用此文</p>
+<footer><strong>yuanshang</strong><cite><a href="https://learnku.com/docs/the-laravel-way/5.6/Tao-2-1/2926" target="_blank" rel="noopener">PhpStorm Xdebug 断点调试工具的安装</a></cite></footer></blockquote>
+
+
       
     </div>
 
@@ -417,7 +472,11 @@
         
         <div class="post-tags">
           
-            <a href="/tags/算法/" rel="tag"># 算法</a>
+            <a href="/tags/PhpStorm/" rel="tag"># PhpStorm</a>
+          
+            <a href="/tags/Xdebug/" rel="tag"># Xdebug</a>
+          
+            <a href="/tags/断点调试/" rel="tag"># 断点调试</a>
           
         </div>
       
@@ -430,15 +489,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/06/12/使用docker搭建gitlab/" rel="next" title="使用docker搭建gitlab">
+                <i class="fa fa-chevron-left"></i> 使用docker搭建gitlab
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/04/21/最大子数组之和/" rel="prev" title="最大子数组之和">
-                最大子数组之和 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -593,7 +652,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#问题："><span class="nav-number">1.</span> <span class="nav-text">问题：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#描述："><span class="nav-number">2.</span> <span class="nav-text">描述：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#思路："><span class="nav-number">3.</span> <span class="nav-text">思路：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#断点调试"><span class="nav-number">2.</span> <span class="nav-text">断点调试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐开发工具"><span class="nav-number">3.</span> <span class="nav-text">推荐开发工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-Xdebug"><span class="nav-number">4.</span> <span class="nav-text">PHP Xdebug</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装"><span class="nav-number">4.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置"><span class="nav-number">4.2.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PhpStorm-配置"><span class="nav-number">5.</span> <span class="nav-text">PhpStorm 配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浏览器配置"><span class="nav-number">6.</span> <span class="nav-text">浏览器配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行"><span class="nav-number">7.</span> <span class="nav-text">运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
